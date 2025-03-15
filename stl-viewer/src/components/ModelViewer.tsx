@@ -7,9 +7,10 @@ import * as THREE from "three";
 interface ModelViewerProps {
   url: string;
   activeTool: string;
+  setDimensions: (dimensions: { width: number; height: number; depth: number }) => void;
 }
 
-const ModelViewer: React.FC<ModelViewerProps> = ({ url, activeTool }) => {
+const ModelViewer: React.FC<ModelViewerProps> = ({ url, activeTool, setDimensions }) => {
   const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { scene, gl, camera } = useThree();
@@ -36,14 +37,24 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ url, activeTool }) => {
 
         if (loadedGeometry.boundingBox) {
           const box = loadedGeometry.boundingBox;
-          const size = box.getSize(new THREE.Vector3()).length();
+          const size = box.getSize(new THREE.Vector3());
+          const sizeLength = size.length();
+
+          const dimensions = {
+            width: size.x,
+            height: size.y,
+            depth: size.z
+          };
+          setDimensions(dimensions)
+          
+
           controlsRef.current.modelCenter = box.getCenter(new THREE.Vector3());
 
           if (camera instanceof THREE.PerspectiveCamera) {
-            camera.position.set(0, 0, size * 2);
-            camera.near = size / 100;
-            camera.far = size * 100;
-            controlsRef.current.zoomLevel = size * 2;
+            camera.position.set(0, 0, sizeLength * 2);
+            camera.near = sizeLength / 100;
+            camera.far = sizeLength * 100;
+            controlsRef.current.zoomLevel = sizeLength * 2;
             camera.updateProjectionMatrix();
           }
         }
