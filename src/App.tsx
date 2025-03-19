@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import ModelViewer from "./components/ModelViewer";
-import FileDropzone from "./components/FileDropzone";
-import ViewerToolbox from "./components/ViewerToolbox";
+import ModelViewer from "./pages/ModelViewer";
+import FileDropzone from "./pages/FileDropzone";
+import ViewerToolbox from "./pages/ViewerToolbox";
 import "./App.css";
-import UnitPrice from "./components/UnitPrice";
+import UnitPrice from "./pages/UnitPrice";
 
 function App() {
   const [modelUrl, setModelUrl] = useState<string | null>(null);
