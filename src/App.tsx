@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import ModelViewer from "./pages/ModelViewer";
 import FileDropzone from "./pages/FileDropzone";
-import ViewerToolbox from "./pages/ViewerToolbox";
 import "./App.css";
 import PriceCalculator from "./pages/PriceCalculator";
 
 function App() {
   const [modelUrl, setModelUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
-  const [activeTool, setActiveTool] = useState<string>("rotate");
   const [dimensions, setDimensions] = useState<{
     width: number;
     height: number;
@@ -40,17 +38,13 @@ function App() {
             <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
               <ambientLight intensity={0.7} />
               <directionalLight position={[10, 10, 10]} intensity={1} />
-              <ModelViewer
-                url={modelUrl}
-                activeTool={activeTool}
-                setDimensions={setDimensions}
-              />
+              <ModelViewer url={modelUrl} setDimensions={setDimensions} />
             </Canvas>
 
-            <ViewerToolbox
+            {/* <ViewerToolbox
               activeTool={activeTool}
               setActiveTool={setActiveTool}
-            />
+            /> */}
 
             <button className="reset-button" onClick={() => setModelUrl(null)}>
               Load Another Model
@@ -58,7 +52,7 @@ function App() {
           </div>
         )}
 
-        <PriceCalculator dimensions={dimensions}  />
+        <PriceCalculator dimensions={dimensions} />
       </div>
     </div>
   );
