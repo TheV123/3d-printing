@@ -11,14 +11,37 @@ interface ModelViewerProps {
     height: number;
     depth: number;
   }) => void;
+  material: string;
 }
 
-const ModelViewer: React.FC<ModelViewerProps> = ({ url, setDimensions }) => {
+const ModelViewer: React.FC<ModelViewerProps> = ({
+  url,
+  setDimensions,
+  material,
+}) => {
   const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
   const { camera, gl } = useThree();
   const controlsRef = useRef<any>(null);
   const modelGroupRef = useRef<THREE.Group>(null);
 
+  const getMaterialProperties = (material: string) => {
+    switch (material) {
+      case "PLA":
+        return { color: "#FFFAFA", roughness: 0.7, metalness: 0.1 };
+      case "ABS":
+        return { color: "#F0E68C", roughness: 0.5, metalness: 0.2 };
+      case "PETG":
+        return { color: "#87CEEB", roughness: 0.4, metalness: 0.3 };
+      case "Nylon":
+        return { color: "#FFFFFF", roughness: 0.3, metalness: 0.4 };
+      case "Resin":
+        return { color: "#FFD700", roughness: 0.2, metalness: 0.6 };
+      default:
+        return { color: "#cccccc", roughness: 0.5, metalness: 0.5 };
+    }
+  };
+
+  const materialProps = getMaterialProperties(material);
   useFrame(() => {
     if (controlsRef.current?.enabled) {
       controlsRef.current.update();
@@ -88,7 +111,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({ url, setDimensions }) => {
         {geometry && (
           <Center>
             <mesh geometry={geometry}>
-              <meshStandardMaterial color="#cccccc" />
+              <meshStandardMaterial {...materialProps} />
             </mesh>
           </Center>
         )}

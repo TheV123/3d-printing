@@ -13,6 +13,7 @@ function App() {
     height: number;
     depth: number;
   } | null>(null);
+  const [material, setMaterial] = useState<string>("PLA");
 
   const handleFileLoaded = (url: string, name: string) => {
     setModelUrl(url);
@@ -38,7 +39,11 @@ function App() {
             <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
               <ambientLight intensity={0.7} />
               <directionalLight position={[10, 10, 10]} intensity={1} />
-              <ModelViewer url={modelUrl} setDimensions={setDimensions} />
+              <ModelViewer
+                url={modelUrl}
+                setDimensions={setDimensions}
+                material={material}
+              />
             </Canvas>
 
             {/* <ViewerToolbox
@@ -52,7 +57,7 @@ function App() {
           </div>
         )}
 
-        <PriceCalculator dimensions={dimensions} />
+        <PriceCalculator dimensions={dimensions} setMaterial={setMaterial} />
       </div>
     </div>
   );

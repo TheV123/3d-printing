@@ -27,9 +27,13 @@ interface PriceCalculatorProps {
     height: number;
     depth: number;
   } | null;
+  setMaterial: (material: string) => void;
 }
 
-const PriceCalculator: React.FC<PriceCalculatorProps> = ({ dimensions }) => {
+const PriceCalculator: React.FC<PriceCalculatorProps> = ({
+  dimensions,
+  setMaterial,
+}) => {
   // Calculated values (not directly editable)
   const [volume, setVolume] = useState<number>(0);
   const [surfaceArea, setSurfaceArea] = useState<number>(0);
@@ -45,6 +49,9 @@ const PriceCalculator: React.FC<PriceCalculatorProps> = ({ dimensions }) => {
   const [laborVolumeRate, setLaborVolumeRate] = useState<number>(0.01); // $/cm³
   const [quantity, setQuantity] = useState<number>(1);
 
+  useEffect(() => {
+    setMaterial(materialType);
+  }, [materialType, setMaterial]);
   // Material properties
   const [materials, setMaterials] = useState({
     PLA: { multiplier: 1.0, density: 1.24, pricePerGram: 0.03 },
@@ -89,7 +96,7 @@ const PriceCalculator: React.FC<PriceCalculatorProps> = ({ dimensions }) => {
     laborBaseFee,
     laborVolumeRate,
     materials,
-    quantity
+    quantity,
   ]);
 
   // Update material properties
